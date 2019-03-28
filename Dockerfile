@@ -5,8 +5,12 @@ LABEL maintainer="technology@werkspot.com"
 ENV DEBIAN_FRONTEND noninteractive
 
 RUN apt-get -qq update \
-    && apt-get install -y varnish
+    && apt-get install -y varnish \
+    && rm -rf /var/lib/apt/lists/*
 
-ENV LISTEN_ADDRESS "*:80"
+ENV LISTEN_ADDRESS "*:8080" \
+    WORKING_DIRECTORY="/tmp/varnish"
 
-CMD varnishd -f /etc/varnish/default.vcl -s malloc,100M -a $LISTEN_ADDRESS -F
+USER nobody:nogroup
+
+CMD varnishd -f /etc/varnish/default.vcl -s malloc,100M -a $LISTEN_ADDRESS -n $WORKING_DIRECTORY -F
