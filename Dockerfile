@@ -1,14 +1,10 @@
-FROM ubuntu:16.04
+FROM alpine:3.9
 
 LABEL maintainer="technology@werkspot.com"
  
-ENV DEBIAN_FRONTEND noninteractive
+RUN apk add --no-cache varnish
 
-RUN apt-get -qq update \
-    && apt-get install -y varnish \
-    && rm -rf /var/lib/apt/lists/*
-
-ENV LISTEN_ADDRESS "*:8080" \
+ENV LISTEN_ADDRESS ":8080" \
     WORKING_DIRECTORY="/tmp/varnish"
 
 USER nobody:nogroup
