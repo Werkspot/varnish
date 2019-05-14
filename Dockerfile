@@ -9,7 +9,7 @@ RUN apt-get -qq update \
     && rm -rf /var/lib/apt/lists/*
 
 ENV LISTEN_ADDRESS "*:8080" \
-    WORKING_DIRECTORY="/tmp/varnish"
+ENV WORKING_DIRECTORY "/tmp/varnish"
 
 USER nobody:nogroup
 
