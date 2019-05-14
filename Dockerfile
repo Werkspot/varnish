@@ -7,6 +7,7 @@ ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get -qq update \
     && apt-get install -y varnish \
     && rm -rf /var/lib/apt/lists/*
+RUN chown nobody:nogroup -R /etc/varnish
 
 ENV LISTEN_ADDRESS "*:8080"
 ENV WORKING_DIRECTORY "/tmp/varnish"
