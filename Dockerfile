@@ -8,7 +8,7 @@ RUN apt-get -qq update \
     && apt-get install -y varnish \
     && rm -rf /var/lib/apt/lists/*
 
-ENV LISTEN_ADDRESS "*:8080" \
+ENV LISTEN_ADDRESS "*:8080"
 ENV WORKING_DIRECTORY "/tmp/varnish"
 
 USER nobody:nogroup
