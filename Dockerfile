@@ -4,8 +4,8 @@ LABEL maintainer="technology@werkspot.com"
  
 RUN apk add --no-cache varnish
 
-ENV LISTEN_ADDRESS ":8080" \
-    WORKING_DIRECTORY="/tmp/varnish"
+ENV LISTEN_ADDRESS ":8080"
+ENV WORKING_DIRECTORY "/tmp/varnish"
 
 USER nobody:nogroup
 
