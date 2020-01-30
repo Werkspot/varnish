@@ -1,20 +1,38 @@
-FROM ubuntu:16.04
+FROM varnish:6.0.5
 
 LABEL maintainer="technology@werkspot.com"
 
 ENV DEBIAN_FRONTEND noninteractive
 
 RUN apt-get -qq update \
-    && apt-get install -y varnish \
+    && apt-get install -y \
+    make \
+    automake \
+    autotools-dev \
+    libedit-dev \
+    libjemalloc-dev \
+    libncurses-dev \
+    libpcre3-dev \
+    libtool \
+    pkg-config \
+    libvarnishapi1 \
+    libvarnishapi-dev \
+    curl \
+    supervisor \
     && rm -rf /var/lib/apt/lists/*
 RUN chown nobody:nogroup -R /etc/varnish
+RUN cd /tmp \
+    && curl -O -L https://download.varnish-software.com/varnish-modules/varnish-modules-0.15.0.tar.gz \
+    && tar zxfv varnish-modules-0.15.0.tar.gz \
+    && cd /tmp/varnish-modules-0.15.0 \
+    && ./configure \
+    && make \
+    && make install \
+    && rm -rf /tmp/varnish*
 
-ARG EXPORTER_VERSION=1.5.1
+ARG EXPORTER_VERSION=1.5.2
 RUN mkdir -p /opt/prometheus_varnish_exporter \
     && cd /opt/prometheus_varnish_exporter \
-    && apt-get -qq update \
-        && apt-get install -y curl supervisor \
-        && rm -rf /var/lib/apt/lists/* \
     && curl -L -O https://github.com/jonnenauha/prometheus_varnish_exporter/releases/download/${EXPORTER_VERSION}/prometheus_varnish_exporter-${EXPORTER_VERSION}.linux-amd64.tar.gz \
     && tar zxfv prometheus_varnish_exporter-${EXPORTER_VERSION}.linux-amd64.tar.gz \
     && ln -s /opt/prometheus_varnish_exporter/prometheus_varnish_exporter-${EXPORTER_VERSION}.linux-amd64/prometheus_varnish_exporter /usr/local/bin/
